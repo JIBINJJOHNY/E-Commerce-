@@ -35,9 +35,9 @@ const loginUserCtrl=asyncHandler(async(req,res)=>{
 
 // Update a User
 const updatedUser = asyncHandler(async(req,res)=>{
-    const {id} = req.params;
+    const { _id } = req.user;
     try{
-        const updatedUser = await User.findByIdAndUpdate(id,{
+        const updatedUser = await User.findByIdAndUpdate(_id,{
             firstname:req?.body?.firstname,
             lastname:req?.body?.lastname,
             email:req?.body?.email,
@@ -88,8 +88,36 @@ const deleteaUser = asyncHandler(async(req, res)=>{
     }
 }); 
 
-
-
+const blockUser = asyncHandler(async(req,res)=>{
+    const { id } = req.params;
+    try{
+      const block = await User.findByIdAndUpdate(id,{
+        isBlocked:true,
+      },{
+        new:true,
+      });
+      res.json({
+        messsage:"User is Blocked",
+      });
+    }catch(error){
+        throw new Error(error);
+    }
+})
+const unblockUser = asyncHandler(async(req,res)=>{
+    const { id } = req.params;
+    try{
+      const unblock = await User.findByIdAndUpdate(id,{
+        isBlocked:false,
+      },{
+        new:true,
+      });
+      res.json({
+        messsage:"User is Unblocked",
+      });
+    }catch(error){
+        throw new Error(error); 
+    }
+})
 module.exports = {
-    createUser,loginUserCtrl,getallUser,getaUser,deleteaUser,updatedUser
+    createUser,loginUserCtrl,getallUser,getaUser,deleteaUser,updatedUser,blockUser,unblockUser
 }; 
