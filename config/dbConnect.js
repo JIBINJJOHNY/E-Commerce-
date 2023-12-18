@@ -4,11 +4,14 @@ const {
 
 const dbConnect = () => {
     try {
-        const connection = mongoose.connect("process.env.MONGODB_URL");
-        console.log("Database connected successfully")
+        const connection = mongoose.connect(process.env.MONGODB_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("Database connected successfully");
     } catch (error) {
         console.log("Database Error");
     }
-
 };
+
 module.exports = dbConnect;
